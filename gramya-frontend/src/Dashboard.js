@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import "./App.css";
+import Navbar from "./Navbar";
 
 function Dashboard() {
   const [candidates, setCandidates] = useState([]);
@@ -9,35 +11,75 @@ function Dashboard() {
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Admin Dashboard</h1>
+    <>
+    <Navbar />
+    <div className="page-center">
+    <div className="dashboard">
 
-      <table border="1" cellPadding="10" style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Job</th>
-            <th>District</th>
-            <th>Score</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      <h1 className="title">Admin Dashboard</h1>
 
-        <tbody>
-          {candidates.map((c, i) => (
-            <tr key={i}>
-              <td>{c.name}</td>
-              <td>{c.job}</td>
-              <td>{c.district}</td>
-              <td style={{ color: c.score >= 7 ? "green" : "red" }}>
-                {c.score}
-              </td>
-              <td>{c.status}</td>
+      {/* Table Container */}
+      <div style={{ overflowX: "auto", marginTop: "20px" }}>
+        <table className="table">
+
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Job</th>
+              <th>District</th>
+              <th>Score</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {candidates.length > 0 ? (
+              candidates.map((c, i) => (
+                <tr key={i}>
+                  <td>{c.name}</td>
+                  <td>{c.job}</td>
+                  <td>{c.district}</td>
+
+                  <td
+                    style={{
+                      color: c.score >= 7 ? "green" : "red",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {c.score}
+                  </td>
+
+                  <td>
+                    <span
+                      style={{
+                        padding: "4px 10px",
+                        borderRadius: "8px",
+                        background:
+                          c.score >= 7 ? "#dcfce7" : "#fee2e2",
+                        color:
+                          c.score >= 7 ? "#166534" : "#991b1b",
+                        fontSize: "12px"
+                      }}
+                    >
+                      {c.status}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                  No candidates yet
+                </td>
+              </tr>
+            )}
+          </tbody>
+
+        </table>
+      </div>
+      </div>
     </div>
+  </> 
   );
 }
 

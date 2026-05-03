@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { useNavigate, useLocation } from "react-router-dom";
+import "./App.css";
+import Navbar from "./Navbar";
 
 function Interview() {
   const navigate = useNavigate();
@@ -126,54 +128,104 @@ function Interview() {
     }
   };
 
-  return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h2>Interview ({questionIndex + 1}/{questions.length})</h2>
+ return (
+  <>
+    <Navbar />
+    <div className="card">
+     <div className="page-center">
+      <div className="interview-container">
 
-      <p><b>Name:</b> {name}</p>
-      <p><b>District:</b> {district}</p>
-      <p><b>Job:</b> {job}</p>
+        <h2 className="title">
+          Interview ({questionIndex + 1}/{questions.length})
+        </h2>
 
-      <h3>{questions[questionIndex]}</h3>
+        {/* Candidate Info */}
+       <div className="user-info">
+        <div style={{ marginBottom: "15px", fontSize: "14px", color: "#eee" }}>
+          <p><b>Name:</b> {name}</p>
+          <p><b>District:</b> {district}</p>
+          <p><b>Job:</b> {job}</p>
+        </div>
+        </div>
 
-      {!image ? (
-        <>
-          <Webcam ref={webcamRef} screenshotFormat="image/jpeg" width={300} />
-          <br />
-          <button onClick={capture}>Capture 📸</button>
-        </>
-      ) : (
-        <>
-          <img src={image} alt="capture" width={300} />
-          <br />
-          <button onClick={() => setImage(null)}>Retake</button>
-        </>
-      )}
+        {/* Question */}
+        <h3>{questions[questionIndex]}</h3>
 
-      <br /><br />
+        {/* Camera Section */}
+        {!image ? (
+          <>
+            <div className="video-box">
+              <Webcam
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width="100%"
+                height="100%"
+              />
+            </div>
 
-      <textarea
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
-        placeholder="Type answer..."
-        style={{ width: "300px", height: "80px" }}
-      />
+            <button className="glow-btn capture-btn" onClick={capture}>
+              📸 Capture
+            </button>
+          </>
+        ) : (
+          <>
+            <img
+              src={image}
+              alt="capture"
+              style={{
+                width: "100%",
+                maxWidth: "350px",
+                borderRadius: "12px"
+              }}
+            />
 
-      <br /><br />
+            <br /><br />
 
-      <button onClick={startListening}>🎤 Speak</button>
+            <button className="glow-btn" onClick={() => setImage(null)}>
+              🔄 Retake
+            </button>
+          </>
+        )}
+ 
+        {/* Answer Box */}
+       <div className="answer-box">
+        <textarea
+          className="text-area"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          placeholder="Type your answer..."
+        />
+        </div>
 
-      <br /><br />
+        {/* Voice Button */}
+        <div style={{ marginTop: "10px" }}>
+          <button className="glow-btn capture-btn" onClick={startListening}>
+            🎤 Speak
+          </button>
+        </div>
 
-      {loading && <p>Analyzing...</p>}
+        {/* Loading */}
+        {loading && (
+          <p style={{ marginTop: "10px", color: "#ddd" }}>
+            ⏳ Analyzing...
+          </p>
+        )}
 
-      <button onClick={handleNext} disabled={loading}>
-        {questionIndex === questions.length - 1
-          ? (loading ? "Analyzing..." : "Submit Interview")
-          : "Next Question"}
-      </button>
-    </div>
-  );
+        {/* Next Button */}
+        <button
+          className="glow-btn start-btn"
+          onClick={handleNext}
+          disabled={loading}
+        >
+          {questionIndex === questions.length - 1
+            ? (loading ? "Analyzing..." : "Submit Interview")
+            : "Next Question"}
+        </button>
+       </div>
+      </div>
+      </div>
+  </>
+);
 }
 
 export default Interview;
