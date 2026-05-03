@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
-import Navbar from "./Navbar";
 
 function Result() {
   const location = useLocation();
@@ -37,7 +36,6 @@ function Result() {
 
   return (
     <>
-    <Navbar />
     <div className="page-center">
      <div className="result-card">
 
@@ -105,9 +103,9 @@ function Result() {
 
       <button
         className="select-btn"
-        onClick={() => navigate("/dashboard")}
+        onClick={() => navigate("/UserDashboard")}
       >
-        View Dashboard
+        View Dashboard 
       </button>
     </div>
     </div>

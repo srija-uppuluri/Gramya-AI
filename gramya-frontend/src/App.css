@@ -9,6 +9,15 @@
   padding: 35px;    /* responsive */
 } 
 
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg,#eef2ff, #bdf2f9);
+  min-height: 100vh;
+}
+
 
 /* ===== TITLE ===== */
 .title {
@@ -48,7 +57,8 @@
 
 .interview-container {
   background: rgba(255,255,255,0.9);  /* more solid */
-  color: #000;                        /* dark text */
+  color: #000; 
+  margin-top: 80px;                      /* dark text */
 }
 
 /* focus effect */
@@ -295,9 +305,9 @@ button {
 .app-layout {
   min-height: 100vh;
   width: 100%;
-
+  padding-top: 80px;
   display: flex;
-  justify-content: center;
+  justify-content: center; 
   align-items: center;
 }
 
@@ -391,6 +401,137 @@ button {
   font-weight: 500;
   color: #000 !important;   /* force black */
   opacity: 1 !important;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  color: white;
+  min-height: calc(100vh - 80px);
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* Navbar */
+.navbar {
+  position: sticky; 
+  top: 0;
+  width: 700px;
+  max-width: 100%;
+  margin: 20px auto;   /* center horizontally */
+  z-index: 1000;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #928edf, #c6aef0);
+  color: white;
+  display: flex;
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(8px);
+}
+
+.main-content {
+  padding-top: 0%; /* 👈 FIXES OVERLAP */
+} 
+
+.navbar h2 {
+  color: #7192db;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #fdfeff;
+  color: white;
+  cursor: pointer;
+}
+
+/* Hero Section */
+.hero-content {
+  text-align: center;
+  margin-top: 0px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  margin: auto;
+  max-width: 700px;
+  width: 100%;
+}
+
+.hero-content h1 {
+  font-size: 65px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #06b1cf;
+}
+
+.hero-content span {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #555;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.9;
+}
+
+/* Buttons */
+.hero-buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.btn {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* User Button */
+.user-btn {
+  background: linear-gradient(135deg, #36d1dc, #5b86e5);
+  color: white;
+}
+
+.user-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Admin Button */
+.admin-btn {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  color: white;
+}
+
+.admin-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.btn:hover {
+  transform: scale(1.05);
 }
 
 /* ===== ANIMATION ===== */

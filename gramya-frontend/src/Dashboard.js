@@ -12,7 +12,6 @@ function Dashboard() {
 
   return (
     <>
-    <Navbar />
     <div className="page-center">
     <div className="dashboard">
 

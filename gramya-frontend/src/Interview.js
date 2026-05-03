@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
-import Navbar from "./Navbar";
 
 function Interview() {
   const navigate = useNavigate();
@@ -130,7 +129,6 @@ function Interview() {
 
  return (
   <>
-    <Navbar />
     <div className="card">
      <div className="page-center">
       <div className="interview-container">
