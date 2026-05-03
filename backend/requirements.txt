@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+celery
+redis
+sqlalchemy
+psycopg2-binary
+minio
+python-multipart
+opencv-python-headless
+moviepy
+sentence-transformers
+requests
+python-dotenv
+alembic
+pydantic-settings
