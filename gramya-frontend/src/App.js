@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Interview from "./Interview";
 import Result from "./Result";
 import Dashboard from "./Dashboard";
+import "./App.css";
 
 function App() {
   const [job, setJob] = useState("");
@@ -13,65 +14,119 @@ function App() {
   const navigate = useNavigate();
 
   return (
+  <div className="app-layout">
+
     <Routes>
       <Route
         path="/"
         element={
-          <div style={{ textAlign: "center", padding: "20px" }}>
-            <h1>Gramya AI</h1>
+          <div className="card">
+         <div className="page-center">
+  <div className="container">
 
-            <input
-              placeholder="Enter Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+    <h1 className="title">Gramya AI</h1>
 
-            <br /><br />
+    {/* 🔹 USER DETAILS CARD */}
+    <div className="card">
+      <input
+        className="input"
+        placeholder="Enter Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
-            <input
-              placeholder="Enter District"
-              value={district}
-              onChange={(e) => setDistrict(e.target.value)}
-            />
+      <input
+        className="input"
+        placeholder="Enter District"
+        value={district}
+        onChange={(e) => setDistrict(e.target.value)}
+      />
+    </div>
 
-            <h2>Select Job</h2>
-            {["Electrician", "Plumber", "Driver"].map((j) => (
-              <button key={j} onClick={() => setJob(j)}>
-                {j}
-              </button>
-            ))}
+    {/* 🔹 JOB CARD */}
+    <div className="card">
+      <h2 className="section-title">Select Job</h2>
+      <div className="option-group">
+        {["Electrician", "Plumber", "Driver"].map((j) => (
+          <button
+            key={j}
+            className={`option-btn ${job === j ? "active" : ""}`}
+            onClick={() => setJob(j)}
+          >
+            {j}
+          </button>
+        ))}
+      </div>
+    </div>
 
-            <h2>Select Language</h2>
-            {["Kannada", "English"].map((lang) => (
-              <button key={lang} onClick={() => setLanguage(lang)}>
-                {lang}
-              </button>
-            ))}
+    {/* 🔹 LANGUAGE CARD */}
+    <div className="card">
+      <h2 className="section-title">Select Language</h2>
+      <div className="btn-group">
+        {["Kannada", "English"].map((lang) => (
+          <button
+            key={lang}
+            className={`option-btn ${language === lang ? "active" : ""}`}
+            onClick={() => setLanguage(lang)}
+          >
+            {lang}
+          </button>
+        ))}
+      </div>
+    </div>
 
-            <br /><br />
+    {/* 🔹 START BUTTON */}
+    <button
+      className="start-btn"
+      onClick={() => {
+        if (!job || !language || !name || !district) {
+          alert("Fill all details");
+        } else {
+          navigate("/interview", {
+            state: { job, language, name, district },
+          });
+        }
+      }}
+    >
+      Start Interview
+    </button>
 
-            <button
-              onClick={() => {
-                if (!job || !language || !name || !district) {
-                  alert("Fill all details");
-                } else {
-                  navigate("/interview", {
-                    state: { job, language, name, district }
-                  });
-                }
-              }}
-            >
-              Start Interview
-            </button>
+  </div>
+</div></div>
+        }
+      />
+
+      <Route
+        path="/interview"
+        element={
+          <div className="interview-container">
+            <Interview />
           </div>
         }
       />
 
-      <Route path="/interview" element={<Interview />} />
-      <Route path="/result" element={<Result />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route
+        path="/result"
+        element={
+          <div className="result-card">
+            <Result />
+          </div>
+        }
+      />
+
+      <Route
+        path="/dashboard"
+        element={
+          <div className="dashboard">
+            <Dashboard />
+          </div>
+        }
+      />
+   
     </Routes>
-  );
+   
+  </div>
+);
 }
 
 export default App;
