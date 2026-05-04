@@ -27,7 +27,8 @@ function Result() {
     job,
     district,
     score,
-    status: score >= 7 ? "Approved" : "Review"
+    status: score >= 7 ? "Approved" : "Review",
+    date: new Date().toISOString() 
   });
 
   localStorage.setItem("candidates", JSON.stringify(existing));
