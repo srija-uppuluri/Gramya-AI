@@ -3,11 +3,11 @@ import { Outlet } from "react-router-dom";
 
 function Layout() {
   return (
-    <div>
+    <div className="app-layout">
       <Navbar />
-      <div className="main-content">
+      <main style={{ flex: 1, width: "100%" }}>
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 }

@@ -10,6 +10,8 @@ opencv-python-headless
 moviepy
 sentence-transformers
 requests
+httpx
+numpy
 python-dotenv
 alembic
 pydantic-settings

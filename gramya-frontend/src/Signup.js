@@ -1,83 +1,74 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./jobs.css";
 
 function Signup() {
   const navigate = useNavigate();
+  const [form, setForm]     = useState({ username:"", password:"", confirm:"" });
+  const [error, setError]   = useState("");
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // Guard: already logged-in users skip this page
+  const existingRole = localStorage.getItem("role");
+  if (existingRole === "admin") { navigate("/dashboard",     { replace: true }); return null; }
+  if (existingRole === "user")  { navigate("/UserDashboard", { replace: true }); return null; }
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const handleSignup = () => {
-    if (!username || !password || !confirmPassword) {
-      alert("Please fill all fields");
-      return;
-    }
+    setError("");
+    const { username, password, confirm } = form;
+    if (!username || !password || !confirm) { setError("All fields are required."); return; }
+    if (password !== confirm)               { setError("Passwords do not match."); return; }
+    if (password.length < 4)               { setError("Password must be at least 4 characters."); return; }
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    if (users.find((u) => u.username === username)) { setError("Username already taken."); return; }
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    const userExists = users.find((u) => u.username === username);
-
-    if (userExists) {
-      alert("User already exists");
-      return;
-    }
-
-    users.push({ username, password });
-
+    const userId  = `user-${Date.now()}`;
+    const newUser = { id: userId, username, password, name: username, email:"", phone:"", skills:"", location:"", role:"user" };
+    users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
 
-    alert("Signup successful! Please login");
+    // Auto-login
+    localStorage.setItem("role",        "user");
+    localStorage.setItem("username",    username);
+    localStorage.setItem("userId",      userId);
+    localStorage.setItem("userProfile", JSON.stringify(newUser));
 
-    navigate("/login");
+    navigate("/UserDashboard", { replace: true });
   };
 
   return (
-    <div className="auth-container">
-      <h2>Sign Up</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-card__logo">🌱</div>
+        <h1 className="auth-card__title">Create Account</h1>
+        <p className="auth-card__sub">Quick signup — add more details after</p>
 
-      <input
-        type="text"
-        placeholder="Enter Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="auth-input"
-      />
+        {error && <div className="auth-err">⚠️ {error}</div>}
 
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="auth-input"
-      />
+        <div className="auth-field">
+          <label className="auth-label">Username</label>
+          <input id="signup-username" className="auth-input" placeholder="Choose a username" value={form.username} onChange={set("username")} />
+        </div>
+        <div className="auth-field">
+          <label className="auth-label">Password</label>
+          <input id="signup-password" className="auth-input" type="password" placeholder="Min 4 characters" value={form.password} onChange={set("password")} />
+        </div>
+        <div className="auth-field">
+          <label className="auth-label">Confirm Password</label>
+          <input id="signup-confirm" className="auth-input" type="password" placeholder="Repeat password" value={form.confirm} onChange={set("confirm")} />
+        </div>
 
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        className="auth-input"
-      />
+        <button id="signup-submit" className="auth-submit-btn" onClick={handleSignup}>Create Account →</button>
 
-      <button onClick={handleSignup} className="auth-btn">
-        Sign Up
-      </button>
-
-      <p>
-        Already have an account?{" "}
-        <span
-          style={{ color: "blue", cursor: "pointer" }}
-          onClick={() => navigate("/login")}
-        >
-          Login
-        </span>
-      </p>
+        <p className="auth-link-text">
+          Already have an account? <span id="signup-goto-login" onClick={() => navigate("/login")}>Login</span>
+        </p>
+        <p className="auth-link-text" style={{ marginTop:4 }}>
+          Want full profile? <span id="signup-goto-register" onClick={() => navigate("/register")}>Register with details</span>
+        </p>
+      </div>
     </div>
   );
 }

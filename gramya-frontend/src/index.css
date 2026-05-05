@@ -1,20 +1,17 @@
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
-
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  padding: 0;
+  font-family: "Inter", "Poppins", sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #bdf2f9);
   min-height: 100vh;
 }
 
-/* VERY IMPORTANT */
 #root {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;  /* THIS FIXES TOP SPACING */
-  padding-top: 40px;
+  flex-direction: column;
 }
-/* remove default spacing */
+
 * {
   box-sizing: border-box;
 }

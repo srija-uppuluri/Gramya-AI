@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     
     # Bhashini
     BHASHINI_API_KEY: str = os.getenv("BHASHINI_API_KEY", "your_bhashini_api_key")
+    BHASHINI_USER_ID: str = os.getenv("BHASHINI_USER_ID", "")
+    BHASHINI_INFERENCE_KEY: str = os.getenv("BHASHINI_INFERENCE_KEY", "")
 
     class Config:
         env_file = ".env"

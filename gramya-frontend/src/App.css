@@ -305,10 +305,10 @@ button {
 .app-layout {
   min-height: 100vh;
   width: 100%;
-  padding-top: 80px;
+  padding-top: 64px; /* matches fixed navbar height */
   display: flex;
-  justify-content: center; 
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .page-center {
@@ -416,22 +416,9 @@ button {
   padding: 0 20px;
 }
 
-/* Navbar */
+/* .navbar is now handled by Navbar.css — kept here only for reference */
 .navbar {
-  position: sticky; 
-  top: 0;
-  width: 700px;
-  max-width: 100%;
-  margin: 20px auto;   /* center horizontally */
-  z-index: 1000;
-  padding: 12px 24px;
-  background: linear-gradient(90deg, #928edf, #c6aef0);
-  color: white;
-  display: flex;
-  border-radius: 10px;
-  justify-content: space-between;
-  align-items: center;
-  backdrop-filter: blur(8px);
+  /* All styles moved to Navbar.css */
 }
 
 .main-content {

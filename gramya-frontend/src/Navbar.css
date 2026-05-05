@@ -1,0 +1,262 @@
+/* ============================================================
+   Navbar.css — Gramya AI Full-Width Professional Navbar
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* ── Core: full width, flush edges, fixed to top ── */
+.gramya-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  /* Full-bleed gradient — no border-radius, no margin */
+  background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 55%, #9333ea 100%);
+  padding: 0 32px;
+  height: 64px;
+
+  box-shadow: 0 4px 24px rgba(79, 70, 229, 0.35);
+  font-family: "Inter", "Poppins", sans-serif;
+
+  /* Prevents any child from leaking outside */
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* ── Brand / Logo ── */
+.gramya-navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.gramya-navbar__brand:hover { opacity: 0.85; }
+
+.gramya-navbar__brand strong {
+  font-weight: 800;
+}
+
+.gramya-navbar__logo-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ── Desktop nav links (centre) ── */
+.gramya-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.gramya-navbar__link {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.gramya-navbar__link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.gramya-navbar__link.active {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── Right-side action area ── */
+.gramya-navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ── Role badge ── */
+.gramya-navbar__role-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 5px 12px;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+/* ── Buttons ── */
+.gramya-navbar__btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.gramya-navbar__btn--ghost {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+}
+
+.gramya-navbar__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.gramya-navbar__btn--primary {
+  background: #fff;
+  color: #4f46e5;
+}
+
+.gramya-navbar__btn--primary:hover {
+  background: #eef2ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gramya-navbar__btn--danger {
+  background: #ef4444;
+  color: #fff;
+}
+
+.gramya-navbar__btn--danger:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* ── Hamburger (mobile only) ── */
+.gramya-navbar__hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.gramya-navbar__hamburger:hover { background: rgba(255,255,255,0.15); }
+
+.gramya-navbar__hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 99px;
+  transition: all 0.25s ease;
+}
+
+/* ── Mobile dropdown menu ── */
+.gramya-navbar__mobile-menu {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  padding: 12px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  border-top: 1px solid rgba(255,255,255,0.15);
+  animation: nb-slideDown 0.2s ease;
+  z-index: 999;
+}
+
+.gramya-navbar__mobile-link {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.88);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.gramya-navbar__mobile-link:hover,
+.gramya-navbar__mobile-link.active {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  font-weight: 700;
+}
+
+.gramya-navbar__mobile-link--danger {
+  color: #fca5a5;
+}
+
+.gramya-navbar__mobile-link--danger:hover {
+  background: rgba(239,68,68,0.25);
+  color: #fff;
+}
+
+/* ── Responsive: hide links, show hamburger on small screens ── */
+@media (max-width: 768px) {
+  .gramya-navbar {
+    padding: 0 20px;
+  }
+
+  .gramya-navbar__links {
+    display: none;
+  }
+
+  .gramya-navbar__btn--ghost,
+  .gramya-navbar__btn--primary,
+  .gramya-navbar__role-badge {
+    display: none;
+  }
+
+  .gramya-navbar__hamburger {
+    display: flex;
+  }
+
+  .gramya-navbar__btn--danger {
+    display: none;
+  }
+}
+
+/* ── Animation ── */
+@keyframes nb-slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
