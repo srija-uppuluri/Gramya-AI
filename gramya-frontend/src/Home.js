@@ -20,14 +20,14 @@ function Home() {
         <div className="hero-buttons">
           <button
             className="btn user-btn"
-            onClick={() => navigate("/user")}   // ✅ FIXED
+            onClick={() => navigate("/login")}   // ✅ FIXED
           >
             👤 I'm a User
           </button>
 
           <button
             className="btn admin-btn"
-            onClick={() => navigate("/dashboard")}  // ✅ FIXED
+            onClick={() => navigate("/login")}  // ✅ FIXED
           >
             🧑‍💼 I'm Admin
           </button>

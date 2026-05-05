@@ -8,6 +8,9 @@ import Result from "./Result";
 import UserForm from "./UserForm";
 import Dashboard from "./Dashboard";
 import Layout from "./Layout";
+import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
+import Signup from "./Signup";
 
 
 import "./App.css";
@@ -17,13 +20,32 @@ function App() {
     <div className="app-layout">
 <Routes>
   <Route path="/" element={<Layout />}>
-    
-    <Route index element={<Home />} />   {/* instead of index */}
-    <Route path="user" element={<UserForm />} />
-    <Route path="/UserDashboard" element={<UserDashboard />} />
+
+    <Route index element={<Home />} />
+    <Route path="/signup" element={<Signup />} />
+
+    <Route path="/login" element={<Login />} />
+
+    <Route path="/user" element={
+      <ProtectedRoute roleRequired="user">
+        <UserForm />
+      </ProtectedRoute>
+    } />
+
+    <Route path="/UserDashboard" element={
+      <ProtectedRoute roleRequired="user">
+        <UserDashboard />
+      </ProtectedRoute>
+    } />
+
     <Route path="/interview" element={<Interview />} />
     <Route path="/result" element={<Result />} />
-    <Route path="/dashboard" element={<Dashboard />} />
+
+    <Route path="/dashboard" element={
+      <ProtectedRoute roleRequired="admin">
+        <Dashboard />
+      </ProtectedRoute>
+    } />
 
   </Route>
 </Routes>
