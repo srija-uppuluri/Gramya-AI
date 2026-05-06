@@ -117,7 +117,7 @@ export default function JobListingPage() {
   useEffect(() => {
     fetch(`${API}/jobs-list`)
       .then((r) => r.json())
-      .then((d) => setJobs(d))
+      .then((d) => setJobs(Array.isArray(d) ? d : (Array.isArray(d?.jobs) ? d.jobs : DEMO_JOBS)))
       .catch(() => setJobs(DEMO_JOBS))
       .finally(() => setLoading(false));
 
