@@ -41,7 +41,10 @@ function Navbar({ onStartTour }) {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userProfile");
     navigate("/login");
   };
 

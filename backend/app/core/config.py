@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 import os
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://admin:password@localhost:5432/assessment_db")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./assessment.db")
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     
     # MinIO

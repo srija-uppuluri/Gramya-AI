@@ -19,9 +19,11 @@ function Login() {
     setError("");
     if (!username || !password) { setError("Please enter username and password."); return; }
 
+    const trimmedUsername = username.trim().toLowerCase();
+
     // ── Admin Login ──
     if (role === "admin") {
-      if (username === "admin" && password === "admin123") {
+      if (trimmedUsername === "admin" && password === "admin123") {
         localStorage.setItem("role", "admin");
         localStorage.setItem("username", "admin");
         navigate("/dashboard", { replace: true });
@@ -33,11 +35,11 @@ function Login() {
 
     // ── User Login ──
     const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const found = users.find((u) => u.username === username && u.password === password);
+    const found = users.find((u) => (u.username || "").trim().toLowerCase() === trimmedUsername && u.password === password);
     if (found) {
       localStorage.setItem("role",        "user");
       localStorage.setItem("username",    found.username);
-      localStorage.setItem("userId",      found.id || `user-${username}`);
+      localStorage.setItem("userId",      found.id || `user-${found.username}`);
       localStorage.setItem("userProfile", JSON.stringify(found));
       navigate("/UserDashboard", { replace: true });
     } else {

@@ -5,24 +5,19 @@ import FraudMonitor from "./FraudMonitor";
 import "./App.css";
 
 function Interview() {
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const { job, language, name, district } = location.state || {};
 
-  // Generate stable IDs for this session
-  const candidateId = useRef(`cand_${name || "guest"}_${Date.now()}`).current;
-  const sessionId   = useRef(`sess_${Date.now()}`).current;
+  const webcamRef = useRef(null);
 
-  const webcamRef    = useRef(null);
-  const fraudMonRef  = useRef(null); // exposes submitFraudCheck
-
-  const [image,         setImage]         = useState(null);
-  const [answer,        setAnswer]        = useState("");
-  const [allAnswers,    setAllAnswers]    = useState([]);
-  const [loading,       setLoading]       = useState(false);
+  const [image, setImage] = useState(null);
+  const [answer, setAnswer] = useState("");
+  const [allAnswers, setAllAnswers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [started,       setStarted]       = useState(false); // delay monitoring until started
+  const [started, setStarted] = useState(false); // delay monitoring until started
 
   const questions = [
     "How do you ensure safety while working?",
@@ -33,7 +28,37 @@ function Interview() {
   const capture = () => {
     const img = webcamRef.current?.getScreenshot();
     setImage(img);
+    setVideoUrl(null);
   };
+
+  const startRecording = () => {
+    setRecordedChunks([]);
+    setVideoUrl(null);
+    setImage(null);
+    setIsRecording(true);
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+      mimeType: "video/webm"
+    });
+    mediaRecorderRef.current.addEventListener("dataavailable", ({ data }) => {
+      if (data.size > 0) {
+        setRecordedChunks((prev) => prev.concat(data));
+      }
+    });
+    mediaRecorderRef.current.start();
+  };
+
+  const stopRecording = () => {
+    setIsRecording(false);
+    mediaRecorderRef.current.stop();
+  };
+
+  React.useEffect(() => {
+    if (recordedChunks.length > 0 && !isRecording) {
+      const blob = new Blob(recordedChunks, { type: "video/webm" });
+      const url = URL.createObjectURL(blob);
+      setVideoUrl(url);
+    }
+  }, [recordedChunks, isRecording]);
 
   const startListening = () => {
     const SpeechRecognition =
@@ -62,10 +87,24 @@ function Interview() {
     let confidence = "Low";
 
     const text = answers.join(" ").toLowerCase();
-    if (text.includes("helmet"))   { score += 3; skills.push("Safety Gear"); }
-    if (text.includes("gloves"))   { score += 2; skills.push("Protection"); }
-    if (text.includes("check"))    { score += 2; skills.push("Awareness"); }
-    if (text.includes("emergency")){ score += 2; skills.push("Emergency Handling"); }
+
+    if (text.includes("helmet")) {
+      score += 3;
+      skills.push("Safety Gear");
+    }
+    if (text.includes("gloves")) {
+      score += 2;
+      skills.push("Protection");
+    }
+    if (text.includes("check")) {
+      score += 2;
+      skills.push("Awareness");
+    }
+    if (text.includes("emergency")) {
+      score += 2;
+      skills.push("Emergency Handling");
+    }
+
     if (image) score += 1;
 
     const suggestion = score >= 7
@@ -81,9 +120,9 @@ function Interview() {
     return { score, skills, suggestion, reason, confidence };
   };
 
-  const handleNext = useCallback(async () => {
+  const handleNext = () => {
     if (!answer && !image) {
-      alert("Provide answer via voice, text, or image.");
+      alert("Provide answer via voice, text, or image");
       return;
     }
 
@@ -91,6 +130,8 @@ function Interview() {
     setAllAnswers(updated);
     setAnswer("");
     setImage(null);
+    setVideoUrl(null);
+    setRecordedChunks([]);
 
     if (questionIndex === questions.length - 1) {
       setLoading(true);
@@ -115,17 +156,17 @@ function Interview() {
           // Assessment result
           ...result,
           // Fraud result
-          fraudScore:        fraudResult?.fraudScore    ?? 0,
-          fraudRiskTier:     fraudResult?.riskTier      ?? "safe",
-          fraudEvents:       fraudResult?.events        ?? [],
-          livenessVerified:  fraudResult?.livenessVerified ?? false,
+          fraudScore: fraudResult?.fraudScore ?? 0,
+          fraudRiskTier: fraudResult?.riskTier ?? "safe",
+          fraudEvents: fraudResult?.events ?? [],
+          livenessVerified: fraudResult?.livenessVerified ?? false,
           duplicateSuspected: fraudResult?.duplicateSuspected ?? false,
         },
       });
     } else {
       setQuestionIndex(questionIndex + 1);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answer, image, allAnswers, questionIndex]);
 
   return (
@@ -168,7 +209,7 @@ function Interview() {
             {/* Question */}
             <h3>{questions[questionIndex]}</h3>
 
-            {/* Camera */}
+            {/* Camera Section */}
             {!image ? (
               <>
                 <div className="video-box">
@@ -177,9 +218,9 @@ function Interview() {
                     screenshotFormat="image/jpeg"
                     width="100%"
                     height="100%"
-                    audio={false}
                   />
                 </div>
+
                 <button className="glow-btn capture-btn" onClick={capture}>
                   📸 Capture
                 </button>
@@ -189,9 +230,15 @@ function Interview() {
                 <img
                   src={image}
                   alt="capture"
-                  style={{ width: "100%", maxWidth: "350px", borderRadius: "12px" }}
+                  style={{
+                    width: "100%",
+                    maxWidth: "350px",
+                    borderRadius: "12px"
+                  }}
                 />
+
                 <br /><br />
+
                 <button className="glow-btn" onClick={() => setImage(null)}>
                   🔄 Retake
                 </button>
@@ -204,7 +251,7 @@ function Interview() {
                 className="text-area"
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
-                placeholder="Type your answer…"
+                placeholder="Type your answer..."
               />
             </div>
 

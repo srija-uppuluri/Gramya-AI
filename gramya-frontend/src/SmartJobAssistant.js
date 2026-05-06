@@ -219,15 +219,22 @@ export default function SmartJobAssistant() {
     if (!SR) { alert("Voice input not supported in this browser. Please type your query."); return; }
     const rec = new SR();
     rec.lang = "kn-IN";            // Kannada
-    rec.interimResults = false;
+    rec.interimResults = true;
     rec.maxAlternatives = 1;
     recognitionRef.current = rec;
     setRecording(true);
     rec.start();
     rec.onresult = (e) => {
-      const text = e.results[0][0].transcript;
-      setTranscript(text);
-      handleSearch(text);
+      const text = Array.from(e.results)
+        .map(result => result[0].transcript)
+        .join('');
+      
+      setTextInput(text);
+      
+      if (e.results[0].isFinal) {
+        setTranscript(text);
+        handleSearch(text);
+      }
     };
     rec.onerror = () => setRecording(false);
     rec.onend   = () => setRecording(false);

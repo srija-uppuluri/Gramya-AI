@@ -18,7 +18,8 @@ export default function Register() {
     if (password.length < 4) { setError("Password must be at least 4 characters."); return; }
 
     const users = JSON.parse(localStorage.getItem("users") || "[]");
-    if (users.find((u) => u.username === username)) { setError("Username already taken."); return; }
+    const trimmedUsername = username.trim().toLowerCase();
+    if (users.find((u) => (u.username || "").trim().toLowerCase() === trimmedUsername)) { setError("Username already taken."); return; }
 
     setLoading(true);
     const userId = `user-${Date.now()}`;
