@@ -90,13 +90,9 @@ export default function Dashboard() {
             🛡️ Fraud Alerts
           </button>
           <button
-            onClick={() => {
-              localStorage.removeItem("role");
-              localStorage.removeItem("username");
-              localStorage.removeItem("userId");
-              localStorage.removeItem("userProfile");
-              navigate("/login");
-            }}>
+            className="dash-cta-btn dash-cta-btn--ghost"
+            onClick={() => { localStorage.clear(); navigate("/login"); }}
+          >
             Logout
           </button>
         </div>
