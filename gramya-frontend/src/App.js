@@ -13,11 +13,12 @@ import Signup            from "./Signup";
 import Register          from "./Register";
 import ProtectedRoute, { PublicRoute } from "./ProtectedRoute";
 
-import SmartJobAssistant   from "./SmartJobAssistant";
-import CategoryJobsSection from "./CategoryJobsSection";
-import JobListingPage      from "./JobListingPage";
-import ApplicationTracker  from "./ApplicationTracker";
-import AdminApplications   from "./AdminApplications";
+import SmartJobAssistant    from "./SmartJobAssistant";
+import CategoryJobsSection  from "./CategoryJobsSection";
+import JobListingPage       from "./JobListingPage";
+import ApplicationTracker   from "./ApplicationTracker";
+import AdminApplications    from "./AdminApplications";
+import AdminFraudDashboard  from "./AdminFraudDashboard";
 
 import "./App.css";
 
@@ -52,6 +53,9 @@ function App() {
           } />
           <Route path="/admin/applications" element={
             <ProtectedRoute roleRequired="admin"><AdminApplications /></ProtectedRoute>
+          } />
+          <Route path="/admin/fraud" element={
+            <ProtectedRoute roleRequired="admin"><AdminFraudDashboard /></ProtectedRoute>
           } />
 
           {/* ── Public job / tool routes ── */}

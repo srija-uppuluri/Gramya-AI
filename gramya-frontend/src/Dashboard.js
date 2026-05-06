@@ -83,6 +83,13 @@ export default function Dashboard() {
             📋 Review Applications
           </button>
           <button
+            className="dash-cta-btn"
+            style={{ background: "linear-gradient(135deg,#ef4444,#b91c1c)", border: "none" }}
+            onClick={() => navigate("/admin/fraud")}
+          >
+            🛡️ Fraud Alerts
+          </button>
+          <button
             className="dash-cta-btn dash-cta-btn--ghost"
             onClick={() => { localStorage.clear(); navigate("/login"); }}
           >
@@ -180,9 +187,10 @@ export default function Dashboard() {
             <h2 className="dash-card__title">⚡ Quick Actions</h2>
             <div className="dash-actions">
               {[
-                ["📋 Review Applications", () => navigate("/admin/applications"),"#4f46e5"],
-                ["📊 View All Candidates", () => setActiveTab("candidates"),     "#7c3aed"],
-                ["🔍 Pending Reviews",     () => navigate("/admin/applications"), "#d97706"],
+                ["📋 Review Applications", () => navigate("/admin/applications"), "#4f46e5"],
+                ["📊 View All Candidates", () => setActiveTab("candidates"),      "#7c3aed"],
+                ["🛡️ Fraud Alerts",        () => navigate("/admin/fraud"),         "#ef4444"],
+                ["🔍 Pending Reviews",     () => navigate("/admin/applications"),  "#d97706"],
               ].map(([label, fn, color]) => (
                 <button key={label} className="dash-action-btn" style={{ borderColor: color+"40", color }}
                   onClick={fn}>{label}</button>

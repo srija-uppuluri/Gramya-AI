@@ -14,8 +14,10 @@ body {
   display: flex;
   justify-content: center;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg,#eef2ff, #bdf2f9);
+  background: var(--bg-page);
   min-height: 100vh;
+  color: var(--text-primary);
+  transition: background 0.4s ease, color 0.3s ease;
 }
 
 
@@ -39,26 +41,20 @@ body {
   max-width: 100%;
   padding: 12px;
   margin: 10px 0;
-
   border-radius: 12px;
-  border: 2px solid rgba(139, 92, 246, 0.5);
-
-  background: white;
-
-  /* ❗ IMPORTANT FIX */
-  color: #333;
+  border: 2px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--input-text);
   outline: none;
   box-sizing: border-box;
-
   transition: all 0.3s ease;
-
   font-size: 14px;
 }
 
 .interview-container {
-  background: rgba(255,255,255,0.9);  /* more solid */
-  color: #000; 
-  margin-top: 80px;                      /* dark text */
+  background: var(--bg-card);
+  color: var(--text-primary);
+  margin-top: 80px;
 }
 
 /* focus effect */
@@ -286,11 +282,11 @@ button {
 }
 
 .table tr:nth-child(even) {
-  background: #f9fafb;
+  background: var(--table-even);
 }
 
 .table tr:hover {
-  background: #eef2ff;
+  background: var(--table-hover);
 }
 
 
@@ -320,16 +316,14 @@ button {
 
 /* ===== CARD STYLE ===== */
 .card {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
-  color: #222;
+  color: var(--text-primary);
   border-radius: 18px;
   padding: 20px;
   margin-top: 20px;
-
-  border: 1px solid rgba(255, 255, 255, 0.3);
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
 }
 
 /* spacing for headings */
@@ -383,11 +377,11 @@ button {
 }
 
 .user-info {
-  color: #333;          /* dark text */
+  color: var(--text-primary);
   font-size: 16px;
   margin-bottom: 20px;
   text-align: center;
-  background: #f9fafb;
+  background: var(--user-info-bg);
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -399,8 +393,7 @@ button {
 .user-info p {
   margin: 5px 0;
   font-weight: 500;
-  color: #000 !important;   /* force black */
-  opacity: 1 !important;
+  color: var(--text-primary);
 }
 
 .hero {

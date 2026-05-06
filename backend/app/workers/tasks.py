@@ -4,7 +4,7 @@ from app.core.celery_app import celery_app
 from app.core.database import SessionLocal
 from app.models.candidate import Assessment
 from app.services.video_service import download_video, extract_audio
-from app.services.fraud_service import check_multiple_faces, check_audio_continuity
+from app.services.fraud_service import analyze_face_frame, analyze_voice_segment, SCORE_TABLE
 from app.services.ai_service import transcribe_audio_bhashini, calculate_semantic_score
 
 TEMP_DIR = "/tmp/processing"
@@ -32,12 +32,31 @@ def process_video_task(assessment_id: int):
         local_audio_path = os.path.join(TEMP_DIR, f"{assessment_id}.wav")
         extract_audio(local_video_path, local_audio_path)
         
-        # 3. Fraud Detection
+        # 3. Fraud Detection (post-processing via video frames)
         flags = []
-        if check_multiple_faces(local_video_path):
-            flags.append("multiple_faces_detected")
-        if check_audio_continuity(local_audio_path):
-            flags.append("audio_cuts_detected")
+        # Sample frames from the video and check for multiple faces
+        try:
+            import cv2
+            import base64
+            cap = cv2.VideoCapture(local_video_path)
+            frame_count = 0
+            multi_face_frames = 0
+            while cap.isOpened():
+                ret, frame = cap.read()
+                if not ret:
+                    break
+                if frame_count % 60 == 0:  # sample every ~2s at 30fps
+                    _, buf = cv2.imencode(".jpg", frame)
+                    b64 = base64.b64encode(buf.tobytes()).decode()
+                    result = analyze_face_frame(b64)
+                    if result["face_count"] > 1:
+                        multi_face_frames += 1
+                frame_count += 1
+            cap.release()
+            if multi_face_frames > 0:
+                flags.append("multiple_faces_detected")
+        except Exception:
+            pass  # cv2 unavailable — skip frame analysis
             
         # 4. Speech to Text
         transcript = transcribe_audio_bhashini(local_audio_path)

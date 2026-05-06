@@ -15,3 +15,9 @@ numpy
 python-dotenv
 alembic
 pydantic-settings
+# Fraud detection
+mediapipe
+librosa
+soundfile
+scipy
+pillow

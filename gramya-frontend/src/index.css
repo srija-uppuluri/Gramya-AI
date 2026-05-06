@@ -1,9 +1,50 @@
+/* ═══════════════════════════════════════════════════════════════
+   index.css — Global tokens: light & dark theme
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+[data-theme="light"] {
+  --bg-page:      linear-gradient(135deg, #eef2ff, #bdf2f9);
+  --bg-card:      rgba(255,255,255,0.92);
+  --bg-surface:   #ffffff;
+  --text-primary: #1e293b;
+  --text-muted:   #64748b;
+  --border-color: rgba(139,92,246,0.25);
+  --input-bg:     #ffffff;
+  --input-text:   #1e293b;
+  --table-even:   #f9fafb;
+  --table-hover:  #eef2ff;
+  --shadow:       0 10px 30px rgba(0,0,0,0.12);
+  --card-border:  rgba(255,255,255,0.3);
+  --hero-text:    #1e293b;
+  --user-info-bg: #f9fafb;
+}
+
+[data-theme="dark"] {
+  --bg-page:      linear-gradient(135deg, #0f1117, #1a1d2e);
+  --bg-card:      rgba(24,28,42,0.97);
+  --bg-surface:   #12151f;
+  --text-primary: #e2e8f0;
+  --text-muted:   #94a3b8;
+  --border-color: rgba(99,102,241,0.35);
+  --input-bg:     #1e2436;
+  --input-text:   #e2e8f0;
+  --table-even:   #181c2a;
+  --table-hover:  rgba(99,102,241,0.1);
+  --shadow:       0 10px 30px rgba(0,0,0,0.5);
+  --card-border:  rgba(99,102,241,0.2);
+  --hero-text:    #e2e8f0;
+  --user-info-bg: #1e2436;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Inter", "Poppins", sans-serif;
-  background: linear-gradient(135deg, #eef2ff, #bdf2f9);
+  background: var(--bg-page);
   min-height: 100vh;
+  color: var(--text-primary);
+  transition: background 0.4s ease, color 0.3s ease;
 }
 
 #root {
@@ -12,6 +53,4 @@ body {
   flex-direction: column;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }

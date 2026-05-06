@@ -1,41 +1,39 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Home() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="hero">
       {/* Hero Content */}
       <div className="hero-content">
         <h1>
-          Smart Interviews. <br />
-          <span>Better Opportunities.</span>
+          {t("home_title")} <br />
+          <span>{t("home_subtitle")}</span>
         </h1>
 
-        <p>
-          Gramya AI helps rural workers prepare for jobs with AI-powered
-          interviews, skill evaluation, and real-time feedback.
-        </p>
+        <p>{t("home_desc")}</p>
 
         <div className="hero-buttons">
           <button
             className="btn user-btn"
-            onClick={() => navigate("/login")}   // ✅ FIXED
+            onClick={() => navigate("/login")}
           >
-            👤 I'm a User
+            👤 {t("home_user_btn")}
           </button>
 
           <button
             className="btn admin-btn"
-            onClick={() => navigate("/login")}  // ✅ FIXED
+            onClick={() => navigate("/login")}
           >
-            🧑‍💼 I'm Admin
+            🧑‍💼 {t("home_admin_btn")}
           </button>
         </div>
       </div>
-
     </div>
   );
 }
 
-export default Home;
+export default Home;
