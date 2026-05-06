@@ -33,12 +33,12 @@ const NORM_ICON  = makeIcon("#6b7280");
 
 // ── Mock job data (mirrors backend JOB_CATALOG) ───────────────────────────────
 const ALL_JOBS = [
-  { id:1, title:"Government School Teacher", type:"government", required_skills:["teaching","communication","hindi","education","patience"], location:"Varanasi, UP", lat:25.3176, lng:82.9739, salary:"₹28,000–₹35,000/mo", tags:["Teaching","Hindi","Government"], openings:15, top_match:true,  match_score:94, ai_reason:"Your communication & education answers scored highly.", missing_skills:["patience"], skill_gap_suggestion:"Practice classroom management scenarios." },
-  { id:2, title:"Electrician / Wiring Technician", type:"private",  required_skills:["electrical","wiring","circuit","tools","safety"], location:"Bengaluru Rural, KA", lat:13.0012, lng:77.5667, salary:"₹18,000–₹25,000/mo", tags:["Electrical","Wiring","Private"], openings:8,  top_match:false, match_score:87, ai_reason:"Electrical aptitude detected in your profile.", missing_skills:["circuit","safety"], skill_gap_suggestion:"Learn basic circuit concepts at your nearest ITI." },
-  { id:3, title:"ASHA Health Worker", type:"government", required_skills:["healthcare","community","awareness","communication","first aid"], location:"Raipur, CG", lat:21.2514, lng:81.6296, salary:"₹15,000–₹20,000/mo", tags:["Healthcare","Community","Government"], openings:22, top_match:false, match_score:91, ai_reason:"Community engagement skills are a strong match.", missing_skills:["first aid"], skill_gap_suggestion:"Take a free first-aid course via Red Cross India." },
-  { id:4, title:"Dairy Farm Supervisor", type:"government", required_skills:["farming","livestock","dairy","management","animal care"], location:"Mehsana, GJ", lat:23.5880, lng:72.3693, salary:"₹18,000–₹22,000/mo", tags:["Farming","Livestock","Dairy"], openings:5,  top_match:false, match_score:82, ai_reason:"Rural farming background aligns well with this role.", missing_skills:["management"], skill_gap_suggestion:"Short dairy management course available at NDDB." },
-  { id:5, title:"Solar Panel Installer", type:"private",  required_skills:["solar","electrical","installation","panels","renewable energy"], location:"Jodhpur, RJ", lat:26.2389, lng:73.0243, salary:"₹14,000–₹20,000/mo", tags:["Solar","Electrical","Private"], openings:30, top_match:false, match_score:76, ai_reason:"Basic electrical knowledge detected. On-site training provided.", missing_skills:["solar","panels","renewable energy"], skill_gap_suggestion:"Enrol in PM Surya Ghar training program (free)." },
-  { id:6, title:"Computer Operator (CSC)", type:"government", required_skills:["computer","typing","data entry","internet","ms office"], location:"Mysuru, KA", lat:12.2958, lng:76.6394, salary:"₹12,000–₹16,000/mo", tags:["Computer","Data Entry","Government"], openings:12, top_match:false, match_score:79, ai_reason:"Basic computer skills detected in your interview.", missing_skills:["ms office","internet"], skill_gap_suggestion:"Free MS Office course on PM e-Vidya portal." },
+  { id:1, title:"Government School Teacher", category:"teaching", type:"government", required_skills:["teaching","communication","hindi","education","patience"], location:"Varanasi, UP", lat:25.3176, lng:82.9739, salary:"₹28,000–₹35,000/mo", tags:["Teaching","Hindi","Government"], openings:15, top_match:true,  match_score:94, ai_reason:"Your communication & education answers scored highly.", missing_skills:["patience"], skill_gap_suggestion:"Practice classroom management scenarios." },
+  { id:2, title:"Electrician / Wiring Technician", category:"electrician", type:"private",  required_skills:["electrical","wiring","circuit","tools","safety"], location:"Bengaluru Rural, KA", lat:13.0012, lng:77.5667, salary:"₹18,000–₹25,000/mo", tags:["Electrical","Wiring","Private"], openings:8,  top_match:false, match_score:87, ai_reason:"Electrical aptitude detected in your profile.", missing_skills:["circuit","safety"], skill_gap_suggestion:"Learn basic circuit concepts at your nearest ITI." },
+  { id:3, title:"ASHA Health Worker", category:"healthcare", type:"government", required_skills:["healthcare","community","awareness","communication","first aid"], location:"Raipur, CG", lat:21.2514, lng:81.6296, salary:"₹15,000–₹20,000/mo", tags:["Healthcare","Community","Government"], openings:22, top_match:false, match_score:91, ai_reason:"Community engagement skills are a strong match.", missing_skills:["first aid"], skill_gap_suggestion:"Take a free first-aid course via Red Cross India." },
+  { id:4, title:"Dairy Farm Supervisor", category:"farming", type:"government", required_skills:["farming","livestock","dairy","management","animal care"], location:"Mehsana, GJ", lat:23.5880, lng:72.3693, salary:"₹18,000–₹22,000/mo", tags:["Farming","Livestock","Dairy"], openings:5,  top_match:false, match_score:82, ai_reason:"Rural farming background aligns well with this role.", missing_skills:["management"], skill_gap_suggestion:"Short dairy management course available at NDDB." },
+  { id:5, title:"Solar Panel Installer", category:"solar", type:"private",  required_skills:["solar","electrical","installation","panels","renewable energy"], location:"Jodhpur, RJ", lat:26.2389, lng:73.0243, salary:"₹14,000–₹20,000/mo", tags:["Solar","Electrical","Private"], openings:30, top_match:false, match_score:76, ai_reason:"Basic electrical knowledge detected. On-site training provided.", missing_skills:["solar","panels","renewable energy"], skill_gap_suggestion:"Enrol in PM Surya Ghar training program (free)." },
+  { id:6, title:"Computer Operator (CSC)", category:"computer", type:"government", required_skills:["computer","typing","data entry","internet","ms office"], location:"Mysuru, KA", lat:12.2958, lng:76.6394, salary:"₹12,000–₹16,000/mo", tags:["Computer","Data Entry","Government"], openings:12, top_match:false, match_score:79, ai_reason:"Basic computer skills detected in your interview.", missing_skills:["ms office","internet"], skill_gap_suggestion:"Free MS Office course on PM e-Vidya portal." },
 ];
 
 const FILTERS = [
@@ -59,12 +59,65 @@ const API = process.env.REACT_APP_API_URL || "http://localhost:8000/api/v1";
 
 // Keyword → skill intent map (Kannada + English)
 const INTENT_MAP = {
-  electrician:["ಎಲೆಕ್ಟ್ರಿಷಿಯನ್","electrical","wiring","ವಿದ್ಯುತ್","electric"],
-  teaching:   ["ಶಿಕ್ಷಕ","teacher","teaching","school","ಶಾಲೆ"],
-  healthcare: ["ಆರೋಗ್ಯ","health","asha","nurse","hospital","doctor"],
-  farming:    ["ರೈತ","farmer","farm","dairy","livestock","ಕೃಷಿ"],
-  solar:      ["ಸೌರ","solar","panel","renewable"],
-  computer:   ["ಕಂಪ್ಯೂಟರ್","computer","typing","data entry"],
+  electrician: [
+    "ಎಲೆಕ್ಟ್ರಿಷಿಯನ್",
+    "electrical",
+    "wiring",
+    "ವಿದ್ಯುತ್",
+    "electric",
+    "current",
+    "wire",
+    "eb",
+    "electrician",
+    "line work"
+  ],
+
+  teaching: [
+    "ಶಿಕ್ಷಕ",
+    "teacher",
+    "teaching",
+    "school",
+    "ಶಾಲೆ",
+    "professor",
+    "tuition"
+  ],
+
+  healthcare: [
+    "ಆರೋಗ್ಯ",
+    "health",
+    "asha",
+    "nurse",
+    "hospital",
+    "doctor",
+    "medical"
+  ],
+
+  farming: [
+    "ರೈತ",
+    "farmer",
+    "farm",
+    "dairy",
+    "livestock",
+    "ಕೃಷಿ",
+    "agriculture"
+  ],
+
+  solar: [
+    "ಸೌರ",
+    "solar",
+    "panel",
+    "renewable",
+    "sun power"
+  ],
+
+  computer: [
+    "ಕಂಪ್ಯೂಟರ್",
+    "computer",
+    "typing",
+    "data entry",
+    "software",
+    "office work"
+  ]
 };
 
 function extractIntent(text) {
@@ -87,7 +140,7 @@ function filterJobs(jobs, filter, userLat, userLng) {
   if (filter === "high-match") out = out.filter((j) => j.match_score > 80);
   if (filter === "government")  out = out.filter((j) => j.type === "government");
   if (filter === "private")     out = out.filter((j) => j.type === "private");
-  return out.sort((a, b) => b.match_score - a.match_score);
+  return out;
 }
 
 // ── Map flyTo helper ──────────────────────────────────────────────────────────
@@ -199,18 +252,32 @@ export default function SmartJobAssistant() {
       const res = await fetch(`${API}/voice-job-suggestions`, { method:"POST", body:fd });
       if (res.ok) {
         const data = await res.json();
+
         setJobs(data.jobs);
+
+      
         setDetectedSkills(data.detected_skills || []);
         setKannResponse(data.kannada_response_text || "");
-      } else { throw new Error("API error"); }
+     } else { throw new Error("API error"); }
     } catch {
       // Fallback: local intent extraction
       const skills = extractIntent(q);
       setDetectedSkills(skills);
-      const ranked = [...ALL_JOBS].sort((a, b) => {
-        const aHit = skills.some((s) => a.required_skills.includes(s)) ? 1 : 0;
-        const bHit = skills.some((s) => b.required_skills.includes(s)) ? 1 : 0;
-        return bHit - aHit || b.match_score - a.match_score;
+      const boostedJobs = ALL_JOBS.map(job => {
+        const isMatch = skills.includes(job.category);
+        return {
+          ...job,
+          match_score: isMatch ? Math.max(95, job.match_score + 10) : job.match_score
+        };
+      });
+
+      const ranked = boostedJobs.sort((a, b) => {
+        const aHit = skills.includes(a.category) ? 1 : 0;
+        const bHit = skills.includes(b.category) ? 1 : 0;
+        if (aHit !== bHit) {
+            return bHit - aHit;
+        }
+        return b.match_score - a.match_score;
       });
       setJobs(ranked);
       setKannResponse(`ನಿಮಗಾಗಿ ${ranked.length} ಕೆಲಸಗಳು ಕಂಡುಬಂದಿವೆ`);

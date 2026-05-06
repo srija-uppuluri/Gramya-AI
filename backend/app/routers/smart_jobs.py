@@ -106,17 +106,12 @@ async def voice_job_suggestions(
         raise HTTPException(status_code=422, detail="Provide either 'audio' file or 'text_input' field.")
 
     # Step 2 — Intent extraction + job ranking
-    detected_skills, ranked_jobs = extract_job_intent(transcript)
-
-    # Re-rank with distance if GPS provided
-    if user_lat is not None and user_lng is not None:
-        ranked_jobs = rank_jobs_by_skills(
-            detected_skills,
-            jobs=JOB_CATALOG,
-            user_lat=user_lat,
-            user_lng=user_lng,
-            interview_score=interview_score,
-        )
+    detected_skills, ranked_jobs = extract_job_intent(
+        transcript,
+        user_lat=user_lat,
+        user_lng=user_lng,
+        interview_score=interview_score
+    )
 
     # Top 6
     top_jobs = ranked_jobs[:6]

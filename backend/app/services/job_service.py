@@ -273,26 +273,41 @@ def rank_jobs_by_skills(
 
     scored = []
     for job in jobs:
+
         job_text = " ".join(job["required_skills"])
         job_emb = model.encode(job_text, convert_to_tensor=True)
-        sem_score = float(util.cos_sim(user_emb, job_emb)[0][0])  # 0..1
 
-        # Distance score (closer = better)
+        sem_score = float(util.cos_sim(user_emb, job_emb)[0][0])
+
+        # Distance score
         dist_km = None
-        dist_score = 0.5  # neutral default
+        dist_score = 0.5
+
         if user_lat is not None and user_lng is not None:
-            dist_km = haversine_km(user_lat, user_lng, job["lat"], job["lng"])
-            # Normalise: 0 km → 1.0, 500 km → 0.0
+            dist_km = haversine_km(
+                user_lat,
+                user_lng,
+                job["lat"],
+                job["lng"]
+            )
+
             dist_score = max(0.0, 1.0 - dist_km / 500.0)
 
-        # Interview score (0..10 → 0..1)
+        # Interview score
         iv_score = min(interview_score / 10.0, 1.0)
 
-        combined = sem_score * 0.60 + dist_score * 0.20 + iv_score * 0.20
+        combined = (
+            sem_score * 0.60 +
+            dist_score * 0.20 +
+            iv_score * 0.20
+        )
         match_pct = round(combined * 100)
 
-        # Skill gap
-        gap = get_skill_gap(user_skills, job["required_skills"])
+        # Skill gap analysis
+        gap = get_skill_gap(
+            user_skills,
+            job["required_skills"]
+        )
 
         scored.append({
             **job,
@@ -300,7 +315,7 @@ def rank_jobs_by_skills(
             "distance_km": round(dist_km, 1) if dist_km is not None else None,
             "missing_skills": gap["missing"],
             "skill_gap_suggestion": gap["suggestion"],
-        })
+    })
 
     scored.sort(key=lambda x: x["match_score"], reverse=True)
     return scored
@@ -358,7 +373,12 @@ INTENT_KEYWORDS: Dict[str, List[str]] = {
 }
 
 
-def extract_job_intent(text: str) -> Tuple[List[str], List[Dict]]:
+def extract_job_intent(
+    text: str,
+    user_lat: float = None,
+    user_lng: float = None,
+    interview_score: float = 7.0
+) -> Tuple[List[str], List[Dict]]:
     """
     Parse spoken/typed text for job intents.
     Returns (detected_skills, filtered_jobs).
@@ -376,6 +396,19 @@ def extract_job_intent(text: str) -> Tuple[List[str], List[Dict]]:
     if not detected_skills:
         # No clear intent → return all jobs ranked by generic profile
         detected_skills = ["general", "labour", "communication"]
+        filtered_jobs = list(JOB_CATALOG)
+    else:
+        # Strictly filter jobs by detected categories
+        filtered_jobs = [job for job in JOB_CATALOG if job.get("category") in detected_skills]
+        if not filtered_jobs:
+            filtered_jobs = list(JOB_CATALOG)
 
-    ranked = rank_jobs_by_skills(detected_skills)
+    ranked = rank_jobs_by_skills(
+        detected_skills,
+        jobs=filtered_jobs,
+        user_lat=user_lat,
+        user_lng=user_lng,
+        interview_score=interview_score
+    )
+
     return detected_skills, ranked
